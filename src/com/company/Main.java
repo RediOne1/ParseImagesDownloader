@@ -69,7 +69,7 @@ public class Main {
 		return new HttpUrl.Builder()
 				.scheme("https")
 				.host("api.parse.com")
-				.addQueryParameter("where", "%7B\"image\":%7B\"%24exists\":true%7D%7D")
+				.addQueryParameter("where", "{\"image\":{\"$exists\":true}}")
 				.build();
 	}
 

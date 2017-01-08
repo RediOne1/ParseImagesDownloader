@@ -48,9 +48,13 @@ public class InsertImage {
 	private static HttpUrl getUrl(String fileName) {
 
 		return new HttpUrl.Builder()
-				.scheme("https")
-				.host("api.parse.com")
-				.addPathSegment("/1/classes/Waypoint")
+				.scheme("http")
+				.host("vps302004.ovh.net")
+				.port(1337)
+				.addPathSegment("parse")
+				.addPathSegment("footsteps")
+				.addPathSegment("classes")
+				.addPathSegment("Waypoint")
 				.addPathSegment(fileName)
 				.build();
 	}
@@ -58,9 +62,9 @@ public class InsertImage {
 	private static String run(HttpUrl url, String fileName) throws IOException {
 		Request request = new Request.Builder()
 				.addHeader("X-Parse-Application-Id", "M1FV3fnghimM90vQptlb76H9K7woxlyya3HEgs6O")
-				.addHeader("X-Parse-REST-API-Key", "TbgGkWe9nfQCFrl8ElB6q5dI83eMvsctdfaGLWT7")
+				.addHeader("Content-Type", "application/json")
 				.url(url)
-				.put(getPutRequest("http://nakazdapore.studio-zetka.pl/footsteps_images/" + fileName))
+				.put(getPutRequest("http://vps302004.ovh.net:1337/public/footsteps_images/" + fileName))
 				.build();
 
 		Response response = client.newCall(request).execute();

@@ -15,14 +15,16 @@ public class Main {
 	private static OkHttpClient client = new OkHttpClient();
 
 	public static void main(String[] args) {
-		//InsertImage.insertImagesFromDir(new File("images2"));
-		fetchImages();
+		InsertImage.insertImagesFromDir(new File("images2"));
+		//fetchImages();
 	}
 
 	private static void fetchImages(){
 		String json = null;
 		try {
-			json = run(getUrl());
+			HttpUrl url = getUrl();
+			System.out.println(url.toString());
+			json = run(url);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -43,7 +45,7 @@ public class Main {
 					if(imageUrlTab.length == 0)
 						continue;
 					String imageFormat = imageUrlTab[imageUrlTab.length - 1];
-					String fileName = "images" + File.separator + waypoint.objectId + "." + imageFormat;
+					String fileName = "images2" + File.separator + waypoint.objectId + "." + imageFormat;
 					System.out.print("  "+fileName);
 					File file = new File(fileName);
 					file.getParentFile().mkdirs();
@@ -58,17 +60,28 @@ public class Main {
 	private static HttpUrl getUrl() {
 
 		return new HttpUrl.Builder()
-				.scheme("https")
-				.host("api.parse.com")
-				.addPathSegment("/1/classes/Waypoint")
+				.scheme("http")
+				.host("vps302004.ovh.net")
+				.port(1337)
+				.addPathSegment("parse")
+				.addPathSegment("footsteps")
+				.addPathSegment("classes")
+				.addPathSegment("Waypoint")
+				//.addQueryParameter("skip", "1000")
 				.addQueryParameter("limit", "1000")
 				.build();
 	}
 
 	private static HttpUrl getFilesUrl() {
 		return new HttpUrl.Builder()
-				.scheme("https")
-				.host("api.parse.com")
+				.scheme("http")
+				.host("vps302004.ovh.net")
+				.port(1337)
+				.addPathSegment("parse")
+				.addPathSegment("footsteps")
+				.addPathSegment("classes")
+				.addPathSegment("Waypoint")
+				.addQueryParameter("limit", "1000")
 				.addQueryParameter("where", "{\"image\":{\"$exists\":true}}")
 				.build();
 	}
@@ -76,7 +89,7 @@ public class Main {
 	private static String run(HttpUrl url) throws IOException {
 		Request request = new Request.Builder()
 				.addHeader("X-Parse-Application-Id", "M1FV3fnghimM90vQptlb76H9K7woxlyya3HEgs6O")
-				.addHeader("X-Parse-REST-API-Key", "TbgGkWe9nfQCFrl8ElB6q5dI83eMvsctdfaGLWT7")
+				.addHeader("Content-Type", "application/json")
 				.url(url)
 				.build();
 
